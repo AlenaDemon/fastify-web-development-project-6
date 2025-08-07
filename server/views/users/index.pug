@@ -1,0 +1,20 @@
+extends ../layouts/application.pug
+
+block content
+  div.container.wrapper.flex-grow-1
+    h1.display-4.fw-bold.mt-4=t('views.users.users')
+  div.table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('views.users.id')
+          th= t('views.users.fullname')
+          th= t('views.users.email')
+          th= t('views.users.createdAt')
+          th= t('views.users.actions')
+      tbody
+        each user in users
+          tr
+            td= user.id
+            td= user.email
+            td= formatDate(user.createdAt)
