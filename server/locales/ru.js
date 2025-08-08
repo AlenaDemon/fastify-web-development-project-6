@@ -44,8 +44,8 @@ export default {
         actions: 'Действия',
         createdAt: 'Дата создания',
         password: 'Пароль',
-        name: 'Имя',
-        lastname: 'Фамилия',
+        firstName: 'Имя',
+        lastName: 'Фамилия',
         new: {
           submit: 'Сохранить',
           signUp: 'Регистрация',

@@ -95,22 +95,28 @@ const registerPlugins = async (app) => {
     },
   });
 
-  fastifyPassport.registerUserDeserializer(
-    (user) => app.objection.models.user.query().findById(user.id),
-  );
-  fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
-  fastifyPassport.use(new FormStrategy('form', app));
-  await app.register(fastifyPassport.initialize());
-  await app.register(fastifyPassport.secureSession());
-  await app.decorate('fp', fastifyPassport);
-  app.decorate('authenticate', (...args) => fastifyPassport.authenticate(
-    'form',
-    {
-      failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
-    },
-  // @ts-ignore
-  )(...args));
+  // Создаём экземпляр Authenticator
+  const passport = new fastifyPassport.Authenticator();
+
+  // Регистрируем сериализатор / десериализатор пользователя
+  passport.registerUserSerializer(async (user) => user.id);
+  passport.registerUserDeserializer(async (id) => app.objection.models.user.query().findById(id));
+
+  // Регистрируем стратегию аутентификации
+  passport.use(new FormStrategy('form', app));
+
+  // Регистрируем плагины fastifyPassport
+  await app.register(passport.initialize());
+  await app.register(passport.secureSession());
+
+  // Декорируем экземпляр passport в app для использования в роутинге
+  app.decorate('fp', passport);
+
+  // Хелпер для аутентификации
+  app.decorate('authenticate', (...args) => passport.authenticate('form', {
+    failureRedirect: app.reverse('root'),
+    failureFlash: i18next.t('flash.authError'),
+  })(...args));
 
   await app.register(fastifyMethodOverride);
   await app.register(fastifyObjectionjs, {

@@ -19,7 +19,7 @@ mixin input(entity, propertyName, errors = {})
     )&attributes(attributes)
     label.floating-label(
       for=inputId
-    )= propertyName
+    )= t(`views.users.${propertyName}`)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 

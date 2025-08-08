@@ -12,9 +12,9 @@ block content
             img.rounded-circle(src='/images/pict1.jpg' alt='Avatar')
           div.col-12.col-md-6.mt-3.mt-mb-0
             +formFor()(action=route('users') method='post')
-              +input(user, t('views.users.name'), errors)(type="text")
-              +input(user, t('views.users.lastname'), errors)(type="text")
-              +input(user, t('views.users.email'), errors)(type="text")
-              +input(user, t('views.users.password'), errors)(type="password")
+              +input(user, 'firstName', errors)(type="text")
+              +input(user, 'lastName', errors)(type="text")
+              +input(user, 'email', errors)(type="text")
+              +input(user, 'password', errors)(type="password")
               +submit(user)(value=t('views.users.new.submit'))
 

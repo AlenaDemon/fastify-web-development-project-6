@@ -44,8 +44,8 @@ export default {
         createdAt: 'Created at',
         actions: 'Actions',
         password: 'Password',
-        name: 'Name',
-        lastname: 'Lastname',
+        firstName: 'Name',
+        lastName: 'Lastname',
         new: {
           submit: 'Register',
           signUp: 'Register',
