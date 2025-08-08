@@ -31,6 +31,7 @@ const mode = process.env.NODE_ENV || 'development';
 // const isDevelopment = mode === 'development';
 
 const setUpViews = (app) => {
+  const route = (name, placeholdersValues) => app.reverse(name, placeholdersValues)
   const helpers = getHelpers(app);
   app.register(fastifyView, {
     engine: {
@@ -39,6 +40,7 @@ const setUpViews = (app) => {
     includeViewExtension: true,
     defaultContext: {
       ...helpers,
+      route,
       assetPath: (filename) => `/assets/${filename}`,
     },
     templates: path.join(__dirname, '..', 'server', 'views'),

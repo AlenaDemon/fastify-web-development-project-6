@@ -21,6 +21,7 @@ module.exports = class User extends unique(BaseModel) {
         lastName: { type: 'string', minLength: 1 },
         email: { type: 'string', minLength: 1 },
         password: { type: 'string', minLength: 3 },
+        createdAt: { type: 'string' },
       },
     };
   }
@@ -37,21 +38,5 @@ module.exports = class User extends unique(BaseModel) {
     this.firstName = this.firstName.trim();
     this.lastName = this.lastName.trim();
     this.email = this.email.toLowerCase();
-  }
-
-  $formatDatabaseJson(json) {
-    const data = super.$formatDatabaseJson(json);
-    data.first_name = data.firstName;
-    data.last_name = data.lastName;
-    delete data.firstName;
-    delete data.lastName;
-    return data;
-  }
-
-  $parseDatabaseJson(json) {
-    const data = super.$parseDatabaseJson(json);
-    data.firstName = json.first_name;
-    data.lastName = json.last_name;
-    return data;
   }
 };

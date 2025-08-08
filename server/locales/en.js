@@ -19,6 +19,9 @@ export default {
           success: 'User registered successfully',
         },
       },
+      delete: {
+        authError: 'Вы не можете редактировать или удалять другого пользователя',
+      },
       authError: 'Access denied! Please login',
     },
     layouts: {
@@ -46,6 +49,8 @@ export default {
         password: 'Password',
         firstName: 'Name',
         lastName: 'Lastname',
+        change: 'Change',
+        delete: 'Delete',
         new: {
           submit: 'Register',
           signUp: 'Register',
