@@ -1,6 +1,8 @@
+/* eslint-disable consistent-return */
 // @ts-nocheck
 
 import i18next from 'i18next';
+import ensureAuthenticated from '../middleware/authenticate.js';
 
 export default (app) => {
   app
@@ -30,44 +32,34 @@ export default (app) => {
         return reply;
       }
     })
-    .get('/users/:id/edit', { name: 'updateUser' }, async (req, reply) => { // страница редактирования пользователя
+    .get('/users/:id/edit', { name: 'updateUser', preHandler: ensureAuthenticated }, async (req, reply) => { // страница редактирования пользователя
       const { id } = req.params;
-      const { user } = req;
-
-      if (!req.isAuthenticated()) {
-        req.flash('error', i18next.t('flash.authError'));
-        reply.redirect(app.reverse('users'));
-        return reply;
-      }
-
-      if (user.id !== Number(id)) {
-        req.flash('error', i18next.t('flash.users.delete.authError'));
-        reply.redirect(app.reverse('users'));
-        return reply;
-      }
-
       const userFind = await app.objection.models.user.query().findById(id);
       reply.render('users/edit', { user: userFind });
       return reply;
     })
-    .delete('/users/:id', { name: 'deleteUser' }, async (req, reply) => {
+    .patch('/users/:id', { name: 'patchUser', preHandler: ensureAuthenticated }, async (req, reply) => { // обновление пользователя
       const { id } = req.params;
-      const { user } = req;
-
-      if (!req.isAuthenticated()) {
-        req.flash('error', i18next.t('flash.authError'));
-        reply.redirect(app.reverse('users'));
-        return reply;
-      }
-
-      if (user.id !== Number(id)) {
-        req.flash('error', i18next.t('flash.users.delete.authError'));
-        reply.redirect(app.reverse('users'));
-        return reply;
-      }
 
       try {
-        await app.objection.models.user.query().deletById(id);
+        const user = await app.objection.models.user.query().findById(id);
+        await user.$query().patch(req.body.data);
+        req.flash('info', i18next.t('flash.users.edit.success'));
+        reply.redirect('/users');
+      } catch (error) {
+        req.flash('error', i18next.t('flash.users.edit.error'));
+        req.body.data.id = id;
+        return reply.render('users/edit', {
+          user: req.body.data,
+          errors: error.data || {},
+        });
+      }
+    })
+    .delete('/users/:id', { name: 'deleteUser', preHandler: ensureAuthenticated }, async (req, reply) => { // удаление пользователя
+      const { id } = req.params;
+
+      try {
+        await app.objection.models.user.query().deleteById(id);
         req.logOut();
         req.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect(app.reverse('users'));

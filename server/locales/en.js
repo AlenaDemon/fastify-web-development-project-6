@@ -18,9 +18,14 @@ export default {
           error: 'Failed to register',
           success: 'User registered successfully',
         },
-      },
-      delete: {
-        authError: 'Вы не можете редактировать или удалять другого пользователя',
+        edit: {
+          error: 'Failed to edit',
+          success: 'User edited successfully',
+        },
+        delete: {
+          error: 'Failed to delete',
+          success: 'User deleted successfully',
+        },
       },
       authError: 'Access denied! Please login',
     },
@@ -54,6 +59,15 @@ export default {
         new: {
           submit: 'Register',
           signUp: 'Register',
+        },
+        edit: {
+          title: 'Edit user',
+          header: 'Edit user: ',
+          submit: 'Update',
+          cancel: 'Cancel',
+          success: 'User successfully edited',
+          error: 'User edit error',
+          notAllowed: 'Not allowed for current user',
         },
       },
       welcome: {

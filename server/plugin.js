@@ -16,7 +16,7 @@ import fastifyObjectionjs from 'fastify-objectionjs'; // Интеграция OR
 import qs from 'qs'; // Библиотека для парсинга query-строк.
 import Pug from 'pug'; // Шаблонизатор Pug.
 import i18next from 'i18next'; // Библиотека интернационализации.
-
+import dotenv from 'dotenv';
 import ru from './locales/ru.js';
 import en from './locales/en.js';
 import addRoutes from './routes/index.js'; // Импорт маршрутов.
@@ -28,10 +28,10 @@ import FormStrategy from './lib/passportStrategies/FormStrategy.js'; // Каст
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
 const mode = process.env.NODE_ENV || 'development';
-// const isDevelopment = mode === 'development';
+const isDevelopment = mode === 'development';
 
 const setUpViews = (app) => {
-  const route = (name, placeholdersValues) => app.reverse(name, placeholdersValues)
+  const route = (name, placeholdersValues) => app.reverse(name, placeholdersValues);
   const helpers = getHelpers(app);
   app.register(fastifyView, {
     engine: {
@@ -77,14 +77,6 @@ const setupLocalization = async () => {
     });
 };
 
-const addHooks = (app) => {
-  app.addHook('preHandler', async (req, reply) => {
-    reply.locals = {
-      isAuthenticated: () => req.isAuthenticated(),
-    };
-  });
-};
-
 const registerPlugins = async (app) => {
   await app.register(fastifySensible);
   // await app.register(fastifyErrorPage);
@@ -101,8 +93,13 @@ const registerPlugins = async (app) => {
   const passport = new fastifyPassport.Authenticator();
 
   // Регистрируем сериализатор / десериализатор пользователя
-  passport.registerUserSerializer(async (user) => user.id);
-  passport.registerUserDeserializer(async (id) => app.objection.models.user.query().findById(id));
+  passport.registerUserSerializer((user) => user.id);
+  passport.registerUserDeserializer(async (id) => {
+    console.log('[DESERIALIZER] got id:', id);
+    const user = await app.objection.models.user.query().findById(id);
+    console.log('[DESERIALIZER] found user:', user);
+    return user || null;
+  });
 
   // Регистрируем стратегию аутентификации
   passport.use(new FormStrategy('form', app));
@@ -129,6 +126,14 @@ const registerPlugins = async (app) => {
 
 export const options = {
   exposeHeadRoutes: false,
+};
+
+const addHooks = (app) => {
+  app.addHook('preHandler', async (req, reply) => {
+    reply.locals = {
+      isAuthenticated: () => req.isAuthenticated(),
+    };
+  });
 };
 
 // eslint-disable-next-line no-unused-vars
