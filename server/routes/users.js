@@ -40,19 +40,25 @@ export default (app) => {
     })
     .patch('/users/:id', { name: 'patchUser', preHandler: ensureAuthenticated }, async (req, reply) => { // обновление пользователя
       const { id } = req.params;
+      const { data } = req.body;
+      app.log.info(`PATCH /users/${id} with data:`, data);
+      app.log.info('Current user:', req.user);
 
       try {
+        const patchForm = await app.objection.models.user.fromJson(data);
         const user = await app.objection.models.user.query().findById(id);
-        await user.$query().patch(req.body.data);
+
+        await user.$query().patch(patchForm);
+
         req.flash('info', i18next.t('flash.users.edit.success'));
         reply.redirect('/users');
       } catch (error) {
         req.flash('error', i18next.t('flash.users.edit.error'));
-        req.body.data.id = id;
-        return reply.render('users/edit', {
-          user: req.body.data,
-          errors: error.data || {},
+        reply.render('users/edit', {
+          user: { id, ...data },
+          errors: error.data,
         });
+        return reply;
       }
     })
     .delete('/users/:id', { name: 'deleteUser', preHandler: ensureAuthenticated }, async (req, reply) => { // удаление пользователя

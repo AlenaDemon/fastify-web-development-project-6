@@ -1,8 +1,8 @@
 extends ../layouts/application.pug
 
+block header 
+  = t('views.users.users')
 block content
-  div.container.wrapper.flex-grow-1
-    h1.display-4.fw-bold.mt-4=t('views.users.users')
   div.table-responsive
     table.table.table-borderless.table-striped.mt-5.bg-white
       thead

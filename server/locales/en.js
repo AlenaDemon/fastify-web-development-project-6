@@ -31,6 +31,7 @@ export default {
     },
     layouts: {
       application: {
+        statuses: 'Statuses',
         users: 'Users',
         signIn: 'Login',
         signUp: 'Register',
@@ -42,6 +43,17 @@ export default {
         new: {
           signIn: 'Login',
           submit: 'Login',
+        },
+      },
+      statuses: {
+        statuses: 'Statuses',
+        create: 'Create status',
+        id: 'ID',
+        name: 'Name',
+        createdAt: 'Created at',
+        new: {
+          submit: 'Register',
+          signUp: 'Register',
         },
       },
       users: {
@@ -59,6 +71,7 @@ export default {
         new: {
           submit: 'Register',
           signUp: 'Register',
+          create: 'Creating a status',
         },
         edit: {
           title: 'Edit user',

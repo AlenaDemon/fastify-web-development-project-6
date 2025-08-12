@@ -31,6 +31,7 @@ export default {
     },
     layouts: {
       application: {
+        statuses: 'Статусы',
         users: 'Пользователи',
         signIn: 'Вход',
         signUp: 'Регистрация',
@@ -42,6 +43,18 @@ export default {
         new: {
           signIn: 'Вход',
           submit: 'Войти',
+        },
+      },
+      statuses: {
+        statuses: 'Статусы',
+        create: 'Создать статус',
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        new: {
+          submit: 'Сохранить',
+          signUp: 'Регистрация',
+          create: 'Создание статуса',
         },
       },
       users: {

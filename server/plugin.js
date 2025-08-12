@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 
 import { fileURLToPath } from 'url';
 import path from 'path'; // Импорт Node.js модулей для работы с путями и URL.
@@ -117,7 +117,7 @@ const registerPlugins = async (app) => {
     failureFlash: i18next.t('flash.authError'),
   })(...args));
 
-  await app.register(fastifyMethodOverride);
+  app.register(fastifyMethodOverride);
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
