@@ -41,8 +41,6 @@ export default (app) => {
     .patch('/users/:id', { name: 'patchUser', preHandler: ensureAuthenticated }, async (req, reply) => { // обновление пользователя
       const { id } = req.params;
       const { data } = req.body;
-      app.log.info(`PATCH /users/${id} with data:`, data);
-      app.log.info('Current user:', req.user);
 
       try {
         const patchForm = await app.objection.models.user.fromJson(data);

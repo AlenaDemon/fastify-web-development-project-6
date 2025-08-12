@@ -5,5 +5,5 @@ block header
 
 block content
   +formFor()(action=route('statusNew') method='post')
-    +input(status, 'firstName', errors)(type="text")
+    +input(status, 'name', errors)(type="text")
     +submit(status)(value=t('views.statuses.new.submit'))

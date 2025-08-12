@@ -4,6 +4,20 @@ export default {
   translation: {
     appName: 'Менеджер задач',
     flash: {
+      statuses: {
+        create: {
+          success: 'Статус успешно создан',
+          error: 'Не удалось создать статус',
+        },
+        delete: {
+          error: 'Не удалось удалить статус',
+          success: 'Статус успешно удален',
+        },
+        edit: {
+          error: 'Не удалось изменить статус',
+          success: 'Статус успешно изменён',
+        },
+      },
       session: {
         create: {
           success: 'Вы залогинены',
@@ -23,8 +37,8 @@ export default {
           success: 'Пользователь успешно изменён',
         },
         delete: {
-          error: 'Не удалось удалить статус',
-          success: 'Статус успешно удален',
+          error: 'Не удалось удалить пользователя',
+          success: 'Пользователя успешно удален',
         },
       },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
@@ -39,6 +53,8 @@ export default {
       },
     },
     views: {
+      change: 'Изменить',
+      delete: 'Удалить',
       session: {
         new: {
           signIn: 'Вход',
@@ -56,8 +72,13 @@ export default {
           signUp: 'Регистрация',
           create: 'Создание статуса',
         },
+        edit: {
+          edit: 'Изменение статуса',
+          submit: 'Изменить',
+        },
       },
       users: {
+        name: 'Наименование',
         users: 'Пользователи',
         id: 'ID',
         fullname: 'Полное имя',
@@ -66,8 +87,6 @@ export default {
         createdAt: 'Дата создания',
         password: 'Пароль',
         firstName: 'Имя',
-        change: 'Изменить',
-        delete: 'Удалить',
         lastName: 'Фамилия',
         new: {
           submit: 'Сохранить',

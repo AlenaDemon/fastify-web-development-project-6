@@ -21,10 +21,10 @@ block content
             td= formatDate(user.createdAt)
             td
               div.d-flex.flex-wrap
-                a.btn.btn-primary.me-1(href=route('updateUser', { "id": user.id.toString() }))= t('views.users.change')
+                a.btn.btn-primary.me-1(href=route('updateUser', { "id": user.id.toString() }))= t('views.change')
                 +buttonTo(`/users/${user.id}`, 'delete')(
                   class="btn btn-danger"
-                  value=t('views.users.delete')
+                  value=t('views.delete')
                   method="delete"
                 )
 

@@ -16,4 +16,15 @@ block content
           th= t('views.statuses.createdAt')
       tbody
         each status in statuses
-          
+          tr
+            td= status.id
+            td= status.name
+            td= formatDate(status.createdAt)
+            td
+              div.d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href=route('updateStatus', { "id": status.id.toString() }))= t('views.change')
+                +buttonTo(`/statuses/${status.id}`, 'delete')(
+                  class="btn btn-danger"
+                  value=t('views.delete')
+                  method="delete"
+                )

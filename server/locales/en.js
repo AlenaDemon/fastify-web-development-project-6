@@ -4,6 +4,12 @@ export default {
   translation: {
     appName: 'Task Manager',
     flash: {
+      statuses: {
+        create: {
+          success: 'Status successfully created',
+          error: 'Failed to create status',
+        },
+      },
       session: {
         create: {
           success: 'You are logged in',
@@ -39,6 +45,8 @@ export default {
       },
     },
     views: {
+      change: 'Change',
+      delete: 'Delete',
       session: {
         new: {
           signIn: 'Login',
@@ -57,6 +65,7 @@ export default {
         },
       },
       users: {
+        name: 'Name',
         users: 'Users',
         id: 'ID',
         fullname: 'Full name',
@@ -66,8 +75,6 @@ export default {
         password: 'Password',
         firstName: 'Name',
         lastName: 'Lastname',
-        change: 'Change',
-        delete: 'Delete',
         new: {
           submit: 'Register',
           signUp: 'Register',
