@@ -4,6 +4,20 @@ export default {
   translation: {
     appName: 'Task Manager',
     flash: {
+      tasks: {
+        create: {
+          success: 'Task created successfully',
+          error: 'Failed to create task',
+        },
+        delete: {
+          error: 'Failed to delete task',
+          success: 'Task successfully deleted',
+        },
+        edit: {
+          error: 'Failed to change task',
+          success: 'The task was successfully modified',
+        },
+      },
       statuses: {
         create: {
           success: 'Status successfully created',
@@ -37,6 +51,7 @@ export default {
     },
     layouts: {
       application: {
+        tasks: 'Tasks',
         statuses: 'Statuses',
         users: 'Users',
         signIn: 'Login',
@@ -51,6 +66,28 @@ export default {
         new: {
           signIn: 'Login',
           submit: 'Login',
+        },
+      },
+      tasks: {
+        description: 'Description',
+        tasks: 'Tasks',
+        create: 'Create task',
+        id: 'ID',
+        name: 'Name',
+        createdAt: 'Created at',
+        statusId: 'Status',
+        author: 'Author',
+        creatorId: 'Executor',
+        label: 'Label',
+        show: 'Show',
+        checkbox: 'Only my tasks',
+        new: {
+          submit: 'Create',
+          create: 'Create a task',
+        },
+        edit: {
+          edit: 'Changing a task',
+          submit: 'Change',
         },
       },
       statuses: {

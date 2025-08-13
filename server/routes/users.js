@@ -62,6 +62,17 @@ export default (app) => {
     .delete('/users/:id', { name: 'deleteUser', preHandler: ensureAuthenticated }, async (req, reply) => { // удаление пользователя
       const { id } = req.params;
 
+      // Проверяем, есть ли задачи, связанные с этим пользователем
+      const tasksCount = await app.objection.models.task
+        .query()
+        .where('creatorId', id)
+        .resultSize();
+
+      if (tasksCount > 0) {
+        req.flash('error', 'Невозможно удалить: пользователь связан с задачами');
+        return reply.redirect(app.reverse('users'));
+      }
+
       try {
         await app.objection.models.user.query().deleteById(id);
         req.logOut();

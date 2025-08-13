@@ -23,6 +23,53 @@ mixin input(entity, propertyName, errors = {})
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
+mixin select(entity, propertyName, options = [], errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-select' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .input-group.mb-3
+    label.input-group-text(for=inputId)= t(`views.tasks.${propertyName}`)
+    select(
+      id=inputId
+      name=getInputName(propertyName)
+      class=classLine
+    )&attributes(attributes)
+      option(value="") 
+      each option in options
+        option(
+          value=option.value
+          selected=_.get(entity, propertyName) ===  Number(option.value)
+        )= option.label
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin checkbox(entity, propertyName, label, errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - inputId = getInputId(propertyName)
+  .mb-3.form-check
+    input.form-check-input(
+      type="checkbox"
+      id=inputId
+      name=getInputName(propertyName)
+      checked=_.get(entity, propertyName)
+    )
+    label.form-check-label(for=inputId)= label
+
+mixin textarea(entity, propertyName, errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3
+    label(for=inputId)= t(`views.tasks.${propertyName}`)
+    textarea(
+      id=inputId
+      name=getInputName(propertyName)
+      class=classLine
+      rows="3"
+    )= _.get(entity, propertyName, '')
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
 

@@ -4,6 +4,20 @@ export default {
   translation: {
     appName: 'Менеджер задач',
     flash: {
+      tasks: {
+        create: {
+          success: 'Задача успешно создана',
+          error: 'Не удалось создать задачу',
+        },
+        delete: {
+          error: 'Не удалось удалить задачу',
+          success: 'Задача успешно удалена',
+        },
+        edit: {
+          error: 'Не удалось изменить задачу',
+          success: 'Задача успешно изменена',
+        },
+      },
       statuses: {
         create: {
           success: 'Статус успешно создан',
@@ -46,6 +60,7 @@ export default {
     layouts: {
       application: {
         statuses: 'Статусы',
+        tasks: 'Задачи',
         users: 'Пользователи',
         signIn: 'Вход',
         signUp: 'Регистрация',
@@ -59,6 +74,28 @@ export default {
         new: {
           signIn: 'Вход',
           submit: 'Войти',
+        },
+      },
+      tasks: {
+        description: 'Описание',
+        tasks: 'Задачи',
+        create: 'Создать задачу',
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        statusId: 'Статус',
+        author: 'Автор',
+        creatorId: 'Исполнитель',
+        label: 'Метка',
+        show: 'Показать',
+        checkbox: 'Только мои задачи',
+        new: {
+          submit: 'Создать',
+          create: 'Создание задачи',
+        },
+        edit: {
+          edit: 'Изменение задачи',
+          submit: 'Изменить',
         },
       },
       statuses: {

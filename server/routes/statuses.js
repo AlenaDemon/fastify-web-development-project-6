@@ -61,6 +61,16 @@ export default (app) => {
     .delete('/statuses/:id', { name: 'deleteStatus' }, async (req, reply) => { // удаление статуса
       const { id } = req.params;
 
+      const tasksCount = await app.objection.models.task
+        .query()
+        .where('statusId', id)
+        .resultSize();
+
+      if (tasksCount > 0) {
+        req.flash('error', 'Невозможно удалить: статус используется в задачах');
+        return reply.redirect(app.reverse('statuses'));
+      }
+
       try {
         await app.objection.models.status.query().deleteById(id);
         req.logOut();

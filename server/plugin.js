@@ -96,7 +96,6 @@ const registerPlugins = async (app) => {
   passport.registerUserSerializer((user) => user.id);
   passport.registerUserDeserializer(async (id) => {
     const user = await app.objection.models.user.query().findById(id);
-    console.log('[DESERIALIZER] found user:', user);
     return user || null;
   });
 
