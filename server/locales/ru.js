@@ -85,7 +85,7 @@ export default {
         createdAt: 'Дата создания',
         statusId: 'Статус',
         author: 'Автор',
-        creatorId: 'Исполнитель',
+        executorId: 'Исполнитель',
         label: 'Метка',
         show: 'Показать',
         checkbox: 'Только мои задачи',

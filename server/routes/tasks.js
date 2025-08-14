@@ -6,7 +6,10 @@ import i18next from 'i18next';
 export default (app) => {
   app
     .get('/tasks', { name: 'tasks' }, async (req, reply) => { // страница со списком всех задач
-      const tasks = await app.objection.models.task.query();
+      const tasks = await app.objection.models.task
+        .query()
+        .withGraphFetched('[status, author, executor]');
+
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
       reply.render('tasks/index', {
@@ -48,7 +51,8 @@ export default (app) => {
     .post('/tasks', { name: 'taskNew' }, async (req, reply) => { // создание новой задачи
       const { data } = req.body;
       data.statusId = Number(data.statusId);
-      data.creatorId = Number(data.creatorId);
+      data.creatorId = req.user.id;
+      data.executorId = data.executorId ? Number(data.executorId) : null;
       const task = new app.objection.models.task();
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
@@ -75,7 +79,9 @@ export default (app) => {
       const { id } = req.params;
       const { data } = req.body;
       data.statusId = Number(data.statusId);
-      data.creatorId = Number(data.creatorId);
+      data.creatorId = req.user.id;
+      data.executorId = data.executorId ? Number(data.executorId) : null;
+
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
       try {
@@ -99,11 +105,18 @@ export default (app) => {
     })
     .delete('/tasks/:id', { name: 'deleteTask' }, async (req, reply) => { // удаление задачи
       const { id } = req.params;
+      const currentUserId = req.user.id;
       const task = await app.objection.models.task.query().findById(id);
-      console.log(task);
+
+      if (currentUserId !== task.creatorId) {
+        console.log(typeof currentUserId, typeof task.creatorId, currentUserId, task.creatorId);
+        req.flash('error', 'Вы не можете удалить чужую задачу');
+        reply.redirect(app.reverse('tasks'));
+        return reply;
+      }
+
       try {
         await app.objection.models.task.query().deleteById(id);
-        req.logOut();
         req.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {

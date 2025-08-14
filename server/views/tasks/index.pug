@@ -14,7 +14,7 @@ block content
           .col-12.col-md
             +select(entity, 'statusId', statuses, errors)
           .col-12.col-md
-            +select(entity, 'creatorId', users, errors)
+            +select(entity, 'executorId', users, errors)
           .col-12.col-md
             +select(entity, 'label', [], errors)
         +checkbox(entity, 'isCreatorUser', t('views.tasks.checkbox'), errors)
@@ -28,16 +28,16 @@ block content
           th= t('views.tasks.name')
           th= t('views.tasks.statusId')
           th= t('views.tasks.author')
-          th= t('views.tasks.creatorId')
+          th= t('views.tasks.executorId')
           th= t('views.statuses.createdAt')
       tbody
         each task in tasks
           tr
             td= task.id
             td= task.name
-            td= task.statusId
-            td= task.creatorId
-            td= task.executorId
+            td= task.status.name
+            td= task.author.firstName
+            td= task.executor.firstName
             td= formatDate(task.createdAt)
             td
               div.d-flex.flex-wrap

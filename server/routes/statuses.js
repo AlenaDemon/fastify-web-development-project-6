@@ -73,7 +73,6 @@ export default (app) => {
 
       try {
         await app.objection.models.status.query().deleteById(id);
-        req.logOut();
         req.flash('info', i18next.t('flash.statuses.delete.success'));
         reply.redirect(app.reverse('statuses'));
       } catch (error) {

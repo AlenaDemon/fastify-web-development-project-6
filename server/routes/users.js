@@ -61,6 +61,7 @@ export default (app) => {
     })
     .delete('/users/:id', { name: 'deleteUser', preHandler: ensureAuthenticated }, async (req, reply) => { // удаление пользователя
       const { id } = req.params;
+      const currentUserId = req.user.id;
 
       // Проверяем, есть ли задачи, связанные с этим пользователем
       const tasksCount = await app.objection.models.task
@@ -75,7 +76,12 @@ export default (app) => {
 
       try {
         await app.objection.models.user.query().deleteById(id);
-        req.logOut();
+        // Если удаляем самого себя — разлогиниваем
+        if (Number(id) === Number(currentUserId)) {
+          req.logOut();
+          req.flash('info', i18next.t('flash.users.delete.success'));
+          return reply.redirect(app.reverse('root'));
+        }
         req.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect(app.reverse('users'));
       } catch (error) {
