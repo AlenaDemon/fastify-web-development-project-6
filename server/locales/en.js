@@ -51,6 +51,7 @@ export default {
     },
     layouts: {
       application: {
+        labels: 'Labels',
         tasks: 'Tasks',
         statuses: 'Statuses',
         users: 'Users',
@@ -69,6 +70,7 @@ export default {
         },
       },
       tasks: {
+        labels: 'Labels',
         description: 'Description',
         tasks: 'Tasks',
         create: 'Create task',

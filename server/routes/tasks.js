@@ -12,10 +12,12 @@ export default (app) => {
 
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
+      const labels = await app.objection.models.label.query();
       reply.render('tasks/index', {
         tasks,
         statuses: statuses.map((s) => ({ value: s.id, label: s.name })),
         users: users.map((u) => ({ value: u.id, label: `${u.firstName} ${u.lastName}` })),
+        labels: labels.map((l) => ({ value: l.id, label: l.name })),
       });
       return reply;
     })
@@ -23,9 +25,11 @@ export default (app) => {
       const task = new app.objection.models.task();
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
+      const labels = await app.objection.models.label.query();
       reply.render('tasks/new', {
         task,
         statuses: statuses.map((s) => ({ value: s.id, label: s.name })),
+        labels: labels.map((l) => ({ value: l.id, label: l.name })),
         users: users.map((u) => ({ value: u.id, label: `${u.firstName} ${u.lastName}` })),
       });
       return reply;
@@ -41,8 +45,10 @@ export default (app) => {
       const task = await app.objection.models.task.query().findById(id);
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
+      const labels = await app.objection.models.label.query();
       reply.render('tasks/edit', {
         task,
+        labels: labels.map((l) => ({ value: l.id, label: l.name })),
         statuses: statuses.map((s) => ({ value: s.id, label: s.name })),
         users: users.map((u) => ({ value: u.id, label: `${u.firstName} ${u.lastName}` })),
       });
@@ -56,11 +62,18 @@ export default (app) => {
       const task = new app.objection.models.task();
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
+      const labelsList = await app.objection.models.label.query();
       task.$set(data);
-
+      console.log('!!!!!!!!!!!data', data)
       try {
         const validTask = await app.objection.models.task.fromJson(data);
-        await app.objection.models.task.query().insert(validTask);
+        const insertedTask = await app.objection.models.task.query().insert(validTask);
+        if (data.labels) {
+          await app.objection.models.taskLabel.query().insert({
+            taskId: insertedTask.id,
+            labelId: Number(data.labels),
+          });
+        }
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
         return reply;
@@ -69,6 +82,7 @@ export default (app) => {
         reply.render('tasks/new', {
           task: data,
           errors: error.data,
+          labels: labelsList.map((l) => ({ value: l.id, label: l.name })),
           statuses: statuses.map((s) => ({ value: s.id, label: s.name })),
           users: users.map((u) => ({ value: u.id, label: `${u.firstName} ${u.lastName}` })),
         });
@@ -81,7 +95,7 @@ export default (app) => {
       data.statusId = Number(data.statusId);
       data.creatorId = req.user.id;
       data.executorId = data.executorId ? Number(data.executorId) : null;
-
+      const labels = await app.objection.models.label.query();
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
       try {
@@ -97,6 +111,7 @@ export default (app) => {
         reply.render('tasks/edit', {
           task: { id, ...data },
           errors: error.data,
+          labels: labels.map((l) => ({ value: l.id, label: l.name })),
           statuses: statuses.map((s) => ({ value: s.id, label: s.name })),
           users: users.map((u) => ({ value: u.id, label: `${u.firstName} ${u.lastName}` })),
         });
@@ -109,7 +124,6 @@ export default (app) => {
       const task = await app.objection.models.task.query().findById(id);
 
       if (currentUserId !== task.creatorId) {
-        console.log(typeof currentUserId, typeof task.creatorId, currentUserId, task.creatorId);
         req.flash('error', 'Вы не можете удалить чужую задачу');
         reply.redirect(app.reverse('tasks'));
         return reply;

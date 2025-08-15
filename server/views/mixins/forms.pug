@@ -70,6 +70,29 @@ mixin textarea(entity, propertyName, errors = {})
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
+mixin multiselect(entity, propertyName, options = [], errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3
+    label(for=inputId)= t(`views.tasks.${propertyName}`)
+    select(
+      id=inputId
+      name=getInputName(propertyName)
+      class=classLine
+      multiple="multiple"
+    )&attributes(attributes)
+      each option in options
+        option(
+          value=option.value
+          selected=Array.isArray(_.get(entity, propertyName)) 
+            ? _.get(entity, propertyName).includes(Number(option.value)) 
+            : _.get(entity, propertyName) === Number(option.value)
+        )= option.label
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
 

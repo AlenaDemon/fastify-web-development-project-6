@@ -1,7 +1,7 @@
 extends ../layouts/application.pug
 
 block header
-  = t('views.tasks.edit.edit')
+  = t('views.tasks.new.create')
 
 block content
   +formFor()(action=route('taskNew') method="post")
@@ -9,4 +9,5 @@ block content
     +textarea(task, 'description', errors)(type="text")
     +select(task, 'statusId', statuses, errors)
     +select(task, 'executorId', users, errors)
+    +multiselect(task, 'labels', labels, error)
     +submit(task)(value=t('views.tasks.new.submit'))

@@ -16,7 +16,7 @@ block content
           .col-12.col-md
             +select(entity, 'executorId', users, errors)
           .col-12.col-md
-            +select(entity, 'label', [], errors)
+            +select(entity, 'labelId', labels, errors)
         +checkbox(entity, 'isCreatorUser', t('views.tasks.checkbox'), errors)
         +submit()(value=t('views.tasks.show'))
 
@@ -37,7 +37,7 @@ block content
             td= task.name
             td= task.status.name
             td= task.author.firstName
-            td= task.executor.firstName
+            td= task.executor ? `${task.executor.firstName} ${task.executor.lastName}` : ''
             td= formatDate(task.createdAt)
             td
               div.d-flex.flex-wrap
